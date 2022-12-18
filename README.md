@@ -12,7 +12,7 @@
   <li>studying the android sdk</li>
     <li>improving knowledge of the Kotlin language</li>
     <li>programming skills training</li>
-  <li>working with Retroafit library</li>
+  <li>working with Retrofit library</li>
   <li>working with API</li>
 </ul>
 
