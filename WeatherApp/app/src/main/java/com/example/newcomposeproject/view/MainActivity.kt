@@ -59,12 +59,12 @@ class MainActivity : ComponentActivity() {
         var sharedPreferences : SharedPreferences = getSharedPreferences("Country", MODE_PRIVATE)
         var sharedPreferencesEditor : SharedPreferences.Editor = sharedPreferences.edit()
 
-        GlobalScope.launch() {
+        GlobalScope.launch(Dispatchers.Default) {
             mainViewModel.doResponse(sharedPreferences.getString("Country", "Москва").toString())
             mainViewModel.doResponse_2(sharedPreferences.getString("Country", "Москва").toString())
             mainViewModel.doResponse_3(sharedPreferences.getString("Country", "Москва").toString())
-
         }
+
         setContent {
             val flag = remember { mutableStateOf(false) }
             val keyboardController = LocalSoftwareKeyboardController.current
@@ -83,11 +83,19 @@ class MainActivity : ComponentActivity() {
                 Row(horizontalArrangement = Arrangement.Center) {
                     var text = remember { mutableStateOf(sharedPreferences.getString("Country", "Москва").toString()) }
                     TextField(
-                        textStyle = TextStyle(fontSize = 16.sp, textDecoration = TextDecoration.None),
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            textDecoration = TextDecoration.None
+                        ),
                         value = text.value,
                         singleLine = true,
                         enabled = flag.value,
-                        colors = TextFieldDefaults.textFieldColors(textColor=Color.White, backgroundColor = textFieldColor),
+                        colors = TextFieldDefaults.textFieldColors(
+                            textColor = Color.White,
+                            backgroundColor = textFieldColor,
+                            cursorColor = Color.White,
+                            focusedIndicatorColor = Color.White
+                        ),
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier
                             .clickable { flag.value = !flag.value }
@@ -95,7 +103,7 @@ class MainActivity : ComponentActivity() {
                             .fillMaxWidth()
                             .alpha(0.7f)
                             .padding(start = 8.dp, end = 8.dp, top = 8.dp),
-                        leadingIcon = { Icon(Icons.Default.Place, contentDescription = "Проверено") },
+                        leadingIcon = { Icon(Icons.Default.Place, contentDescription = "Место") },
                         onValueChange = { newText ->
                             text.value = newText
                         },
@@ -106,7 +114,6 @@ class MainActivity : ComponentActivity() {
                                     viewModel.doResponse_2(text.value)
                                     mainViewModel.doResponse_3(text.value)
                                     sharedPreferencesEditor.putString("Country", text.value).apply()
-
                                 }
                                 flag.value = false
                                 keyboardController?.hide()
@@ -129,3 +136,5 @@ class MainActivity : ComponentActivity() {
     }
 
 }
+
+
