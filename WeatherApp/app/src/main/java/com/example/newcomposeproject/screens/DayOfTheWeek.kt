@@ -35,17 +35,16 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-@SuppressLint("SimpleDateFormat", "CoroutineCreationDuringComposition")
 @Preview(showBackground = true)
 @Composable
 fun trackByDay() {
     val viewModel: MainViewModel = viewModel()
-    var response1: ArrayList<ArrayList<Forecastday1>> = viewModel.arrayList2.value
+    val response1: ArrayList<ArrayList<Forecastday1>> = viewModel.arrayList2.value
 
 
-    var date = remember { mutableStateOf("") }
-    var picture = remember { mutableStateOf("") }
-    var temperature = remember { mutableStateOf("") }
+    val date = remember { mutableStateOf("") }
+    val picture = remember { mutableStateOf("") }
+    val temperature = remember { mutableStateOf("") }
     val myColor = Color(0xFF0F4068)
 
     Card(
@@ -59,14 +58,16 @@ fun trackByDay() {
 
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp)
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(top = 10.dp, start = 8.dp, end = 8.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            for (i in 0..5) {
+            for (i in 0..response1.size + 1) {
                 if (response1.size != 0) {
                     var array = response1[0][i].date.split("-")
-                    date.value = array[2] + "-" +  array[1] + "-" + array[0]
+                    date.value = array[2] + "-" + array[1] + "-" + array[0]
                     picture.value = response1[0][i].day.condition.icon
                     temperature.value = "  " + response1[0][i].day.avgtemp_c.toString()
                 }
@@ -97,7 +98,9 @@ fun trackByDay() {
                         color = Color.White
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp).background(Color.White))
+                Spacer(modifier = Modifier
+                    .height(3.dp)
+                    .background(Color.White))
             }
 
         }
